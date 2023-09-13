@@ -1,4 +1,67 @@
+import { TUsers, TProducts } from "./types";
+import express, {Request, Response, query} from 'express'
+import cors from 'cors'
 import { users, products,createUser,createProduct, getAllProducts, getAllUsers, searchProductByName } from "./database";
+
+
+
+const app = express()
+app.use(express.json)
+app.use(cors())
+
+app.listen(3003, () => {
+    console.log("Servidor rodando na porta 3000")
+})
+
+app.get("/ping", (req: Request, res:Response) => {
+    res.send("pong!")
+})
+
+app.get("/users", (req: Request, res: Response) => {
+    const resultUsers: TUsers[] = users 
+    res.status(200).send(resultUsers)
+})
+
+// app.get("/products", (req:Request, res: Response) => {
+//     const resultProducts: TProducts[] = products
+//     res.status(200).send(resultProducts)
+// })
+
+app.get("/products", (req:Request , res:Response) => {
+    const q:string = req.query.q as string;
+    const resultProducts:TProducts[] = products
+
+
+    if (!q) {
+        return res.status(200).send(resultProducts)
+    } else {
+        const searchProductByName: TProducts[] = products.filter(products => products.name.toLowerCase().includes(q.toLowerCase()))
+        return res.status(200).send(searchProductByName)
+    }
+
+})
+
+app.post("/users", (req:Request, res: Response) => {
+    const {id, name, email, password} = req.body
+    
+    const newUser = createUser(id,name,email,password)
+    res.status(201).send(newUser)
+})
+
+app.post("/products", (req: Request, res: Response) => {
+    const {id, name, price, description, imageUrl} = req.body
+    
+    const newProduct: TProducts = {
+        id,
+        name,
+        price,
+        description, 
+        imageUrl
+    }
+    products.push(newProduct)
+    res.status(201).send(`O produtos ${name} foi cadastrado com sucesso`)
+})
+
 
 console.log(createUser('003', 'João', 'joao@gmail.com', 'senha1'))
 console.log(getAllUsers())
