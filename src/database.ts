@@ -1,5 +1,6 @@
 import { TUsers, TProducts } from "./types";
 
+
 export const users:TUsers[] = [
     {
         id:"001",
@@ -31,7 +32,7 @@ export const products:TProducts[] = [
         description:'Monitor LED Full HD 24 polegadas',
         imageUrl:"https://picsum.photos/seed/Monitor/400"
     }
-]
+] 
 
 // EXERCÍCIO 1
 
