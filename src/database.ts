@@ -18,7 +18,7 @@ export const users:TUsers[] = [
     }
 ]
 
-export const products:TProducts[] = [
+export const products:TProducts[]  = [
     {
         id:'prod001',
         name:'Mouse Gamer',
